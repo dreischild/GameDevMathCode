@@ -45,9 +45,7 @@ var vector = {
     },
 
     getLength: function () {
-        return this._y / Math.sin(this.getAngle());
-        //return this._x / Math.cos(this.getAngle());
-        //return Math.sqrt(this._x * this._x + this._y * this._y);
+        return Math.sqrt(this._x * this._x + this._y * this._y);
     },
 
     add: function (v2) {
