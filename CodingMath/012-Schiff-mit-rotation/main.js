@@ -4,7 +4,7 @@ window.onload = function() {
         width = canvas.width = window.innerWidth,
         height = canvas.height = window.innerHeight,
         ship = particle.create(width / 2, height / 2, 0, 0),
-        angle = 0, /* Winkel */
+        angle = Math.PI * 1.5, /* Winkel */
         thrust = vector.create(0, 0); /* Schub */
 
     update();
