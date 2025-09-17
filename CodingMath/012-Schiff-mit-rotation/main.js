@@ -15,10 +15,10 @@ window.onload = function() {
                 thrust.setY(0.1);
                 break;
             case 37: /* Left */
-                thrust.setX(-0.1);
+                angle -= 0.1;
                 break;
             case 39: /* Right */
-                thrust.setX(0.1);
+                angle += 0.1;
                 break;
             case 38: /* Down */
                 thrust.setY(-0.1);
