@@ -2,31 +2,66 @@ window.onload = function() {
     var canvas = document.getElementById("canvas"),
         context = canvas.getContext("2d"),
         width = canvas.width = window.innerWidth,
-        height = canvas.height = window.innerHeight;
-
-    var paricles = [],
-        numberOfParticles = 150;
-
-    for (var i = 0; i < numberOfParticles; i++) {
-        paricles.push(particle.create(width / 2, height / 4, Math.random() * 5 + 2, Math.random() * Math.PI * 2, 0.1));
-    }
+        height = canvas.height = window.innerHeight,
+        ship = particle.create(width / 2, height / 2, 0, 0),
+        thrust = vector.create(0, 0); /* Schub */
 
     update();
+
+    document.body.addEventListener("keydown", function(event) {
+        switch (event["keyCode"]) {
+            case 40: /* Up */
+                thrust.setY(0.1);
+                break;
+            case 37: /* Left */
+                thrust.setX(-0.1);
+                break;
+            case 39: /* Right */
+                thrust.setX(0.1);
+                break;
+            case 38: /* Down */
+                thrust.setY(-0.1);
+                break;
+        }
+    });
+
+    document.body.addEventListener("keyup", function(event) {
+        switch (event["keyCode"]) {
+            case 40: /* Up */
+                thrust.setY(0);
+                break;
+            case 37: /* Left */
+                thrust.setX(0);
+                break;
+            case 39: /* Right */
+                thrust.setX(0);
+                break;
+            case 38: /* Down */
+                thrust.setY(0);
+                break;
+        }
+    });
 
     function update() {
         context.clearRect(0, 0, width, height);
 
-        for (var i = 0; i < paricles.length; i++) {
-            var p = paricles[i];
+        ship.accelerate(thrust);
+        ship.update();
 
-            p.update();
+        context.beginPath();
+        context.arc(ship.position.getX(), ship.position.getY(), 10, 0, Math.PI * 2, false);
+        context.fill();
 
-            /** Kreis zeichnen */
-            context.beginPath();
-            context.arc(p.position.getX(), p.position.getY(), 5, 0, Math.PI * 2, false);
-            context.fillStyle = "rgba(0, 0, 0, 0.5)";
-            context.fill();
-            context.closePath();
+        if (ship.position.getX() > width) {
+            ship.position.setX(0);
+        } else if (ship.position.getX() < 0) {
+            ship.position.setX(width);
+        }
+
+        if (ship.position.getY() > height) {
+            ship.position.setY(0);
+        } else if (ship.position.getY() < 0) {
+            ship.position.setY(height);
         }
 
         requestAnimationFrame(update);
