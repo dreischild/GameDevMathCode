@@ -4,41 +4,37 @@ window.onload = function() {
         width = canvas.width = window.innerWidth,
         height = canvas.height = window.innerHeight,
         ship = particle.create(width / 2, height / 2, 0, 0),
-        angle = Math.PI * 1.5, /* Winkel */
+        angle = 0 /* Winkel */
         thrust = vector.create(0, 0); /* Schub */
 
     update();
 
     document.body.addEventListener("keydown", function(event) {
         switch (event["keyCode"]) {
-            case 40: /* Up */
-                thrust.setY(0.1);
+            case 38: /* Up */
+                thrust.setLength(0.1);
+                thrust.setAngle(angle);
                 break;
             case 37: /* Left */
-                angle -= 0.1;
+                angle -= 0.25;
                 break;
             case 39: /* Right */
-                angle += 0.1;
+                angle += 0.25;
                 break;
-            case 38: /* Down */
-                thrust.setY(-0.1);
+            case 40: /* Down */
+                thrust.setLength(0.1);
+                thrust.setAngle(angle + Math.PI);
                 break;
         }
     });
 
     document.body.addEventListener("keyup", function(event) {
         switch (event["keyCode"]) {
-            case 40: /* Up */
-                thrust.setY(0);
+            case 38: /* Up */
+                thrust.setLength(0);
                 break;
-            case 37: /* Left */
-                thrust.setX(0);
-                break;
-            case 39: /* Right */
-                thrust.setX(0);
-                break;
-            case 38: /* Down */
-                thrust.setY(0);
+            case 40: /* Down */
+                thrust.setLength(0);
                 break;
         }
     });
@@ -56,7 +52,15 @@ window.onload = function() {
         context.beginPath();
         context.moveTo(10, 0);
         context.lineTo(-10, -7);
+        context.lineTo(-10, 0);
+
+        if (thrust.getLength() > 0) {
+            context.lineTo(-20, 0);
+            context.lineTo(-10, 0);
+        }
+
         context.lineTo(-10, 7);
+        context.lineTo(10, 0);
         context.lineTo(10, 0);
         context.stroke();
 
